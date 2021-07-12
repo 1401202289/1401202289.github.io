@@ -8,13 +8,15 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>简单的购物系统 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
+  <meta name="description" content="一个简单的购物系统，利用JAVA来实现">
+<meta property="og:type" content="article">
 <meta property="og:title" content="简单的购物系统">
 <meta property="og:url" content="http://example.com/2021/07/11/%E7%AE%80%E5%8D%95%E7%9A%84%E8%B4%AD%E7%89%A9%E7%B3%BB%E7%BB%9F/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一个简单的购物系统，利用JAVA来实现">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-11T15:43:32.000Z">
-<meta property="article:modified_time" content="2021-07-11T15:44:00.392Z">
+<meta property="article:modified_time" content="2021-07-12T11:46:21.367Z">
 <meta property="article:author" content="Honan">
 <meta property="article:tag" content="JAVA">
 <meta name="twitter:card" content="summary">
@@ -171,7 +173,574 @@
     
     <div class="article-entry" itemprop="articleBody">
       
+        <h1 id="一个简单的购物系统，利用JAVA来实现"><a href="#一个简单的购物系统，利用JAVA来实现" class="headerlink" title="一个简单的购物系统，利用JAVA来实现"></a>一个简单的购物系统，利用JAVA来实现</h1><span id="more"></span>
+<h2 id="以下为各目录的代码，可自行复制实践"><a href="#以下为各目录的代码，可自行复制实践" class="headerlink" title="以下为各目录的代码，可自行复制实践"></a>以下为各目录的代码，可自行复制实践</h2><h3 id="bean包"><a href="#bean包" class="headerlink" title="bean包"></a>bean包</h3><h3 id="ProductBean："><a href="#ProductBean：" class="headerlink" title="ProductBean："></a>ProductBean：</h3><pre><code>package bean;
+
+public class ProductBean &#123;
+private int pID;
+private String pname;
+private String ptype;
+private double price;
+private double pnum;
+public int getpID() &#123;
+    return pID;
+&#125;
+public void setpID(int pID) &#123;
+    this.pID = pID;
+&#125;
+public String getPname() &#123;
+    return pname;
+&#125;
+public void setPname(String pname) &#123;
+    this.pname = pname;
+&#125;
+public String getPtype() &#123;
+    return ptype;
+&#125;
+public void setPtype(String ptype) &#123;
+    this.ptype = ptype;
+&#125;
+public double getPrice() &#123;
+    return price;
+&#125;
+public void setPrice(double price) &#123;
+    this.price = price;
+&#125;
+public double getPnum() &#123;
+    return pnum;
+&#125;
+public void setPnum(double pnum) &#123;
+    this.pnum = pnum;
+&#125;
+public ProductBean(int pID, String pname, String ptype, double price,
+        double pnum) &#123;
+    super();
+    this.pID = pID;
+    this.pname = pname;
+    this.ptype = ptype;
+    this.price = price;
+    this.pnum = pnum;
+&#125;
+public ProductBean() &#123;
+    super();
+    // TODO Auto-generated constructor stub
+  &#125;
+&#125;
+</code></pre>
+<h3 id="CustorBean："><a href="#CustorBean：" class="headerlink" title="CustorBean："></a>CustorBean：</h3><pre><code>package bean;
+
+import java.util.ArrayList;
+
+
+public class CustorBean &#123;
+private String name;
+private String password;
+private ArrayList&lt;ProductBean&gt; ulist;
+public String getName() &#123;
+    return name;
+&#125;
+public void setName(String name) &#123;
+    this.name = name;
+&#125;
+public String getPassword() &#123;
+    return password;
+&#125;
+public void setPassword(String password) &#123;
+    this.password = password;
+&#125;
+public ArrayList&lt;ProductBean&gt; getUlist() &#123;
+    return ulist;
+&#125;
+public void setUlist(ArrayList&lt;ProductBean&gt; ulist) &#123;
+    this.ulist = ulist;
+  &#125;
+
+&#125;
+</code></pre>
+<h3 id="UserBean："><a href="#UserBean：" class="headerlink" title="UserBean："></a>UserBean：</h3><pre><code>package bean;
+/**
+ * 用户的信息
+ * @author GXY
+ *
+ */
+public class UserBean &#123;
+private String uid;
+private String username;
+private String password;
+
+public UserBean() &#123;
+    super();
+    // TODO Auto-generated constructor stub
+&#125;
+
+public UserBean(String uid, String username, String password) &#123;
+    super();
+    this.uid = uid;
+    this.username = username;
+    this.password = password;
+&#125;
+
+
+public String getUid() &#123;
+    return uid;
+&#125;
+
+public void setUid(String uid) &#123;
+    this.uid = uid;
+&#125;
+
+public String getUsername() &#123;
+    return username;
+&#125;
+
+public void setUsername(String username) &#123;
+    this.username = username;
+&#125;
+
+public String getPassword() &#123;
+    return password;
+&#125;
+
+public void setPassword(String password) &#123;
+    this.password = password;
+&#125;
+
+/*public static void main(String[] args) &#123;
+    // TODO Auto-generated method stub
+
+&#125;*/
+
+&#125;
+</code></pre>
+<h3 id="com包"><a href="#com包" class="headerlink" title="com包"></a>com包</h3><h3 id="TestMain："><a href="#TestMain：" class="headerlink" title="TestMain："></a>TestMain：</h3><pre><code>package com;
+
+import java.util.Scanner;
+
+import test.TestCustor;
+import test.TestUserDao;
+import db.DB;
+
+public class TestMain &#123;
+    public static void main(String[] args) &#123;
+        Scanner sc=new Scanner(System.in);
+        DB db=new DB();
+        while(true)&#123;
+        System.out.println(&quot;请选择 1管理员 2 顾客 3 退出&quot;);
+        int num=sc.nextInt();
+        switch(num)&#123;
+        case 1:
+            TestUserDao admin=new TestUserDao();
+            admin.admin();
+            break;
+        case 2:
+            
+            TestCustor custor=new TestCustor();
+            custor.custor();
+            break;
+        case 3:
+        return;
+            &#125;    
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="dao包"><a href="#dao包" class="headerlink" title="dao包"></a>dao包</h3><h3 id="ProductDao："><a href="#ProductDao：" class="headerlink" title="ProductDao："></a>ProductDao：</h3><pre><code>package dao;
+
+import java.util.Iterator;
+
+import db.DB;
+
+
+import bean.ProductBean;
+public class ProductDao &#123;
+/**
+ * 对对象进行操作的
+ */
+    /**
+     *  
+     * @param pbean
+     * @return  pid 是否存在 如果存在 不让添加  如果不存在 再添加
+     */
+
+public boolean addProduct(ProductBean pbean)&#123;
+//完成对商品的添加
+boolean b=false;//默认给的false
+if(!isadd(pbean.getpID()))&#123;// 判断id 在集合中是否存在
+    b= DB.list.add(pbean);//不存在就执行添加操作
+        &#125;
+ else&#123;
+     System.out.println(&quot;该用户已存在&quot;);
+ &#125;
+return b;
+&#125;
+/**
+ * 根据id 判断该条数据在数据库中是否存在
+ * @param id
+ * @return
+ */
+public boolean isadd(int id) &#123;
+    // 完成对商品的添加
+    boolean b = false;
+    for(int i=0;i&lt;DB.list.size();i++)&#123;
+        ProductBean bean=DB.list.get(i);
+        if(bean.getpID()==id)&#123;
+            b=true;&#125;
+        &#125;
+    return b;
+&#125;
+public boolean editProduct(ProductBean pbean)&#123;
+    boolean b=false;
+    for(int i=0;i&lt;DB.list.size();i++)&#123;
+        ProductBean object=DB.list.get(i);
+        if(object.getpID()==pbean.getpID())&#123;
+            DB.list.remove(i);
+            DB.list.add(pbean);
+            b=true; &#125; &#125;
+    return b;
+&#125;
+public boolean delProduct(int id)&#123;
+    boolean b=false;
+    for(int i=0;i&lt;DB.list.size();i++)&#123;
+        ProductBean object=DB.list.get(i);
+        if(object.getpID()==id)&#123;
+            DB.list.remove(i);
+            b=true; &#125; &#125;
+    return b;
+&#125;
+public void selectProduct()&#123;
+    for(int i=0;i&lt;DB.list.size();i++)&#123;
+        ProductBean object=DB.list.get(i);
+        System.out.println(object.getpID()+&quot;,&quot;+object.getPname()+&quot;,&quot;+object.getPrice()+&quot;,&quot;+object.getPtype()+&quot;,&quot;
+                +object.getPnum());
+        &#125;
+    &#125; 
+&#125;
+</code></pre>
+<h3 id="CustorDao："><a href="#CustorDao：" class="headerlink" title="CustorDao："></a>CustorDao：</h3><pre><code>package dao;
+
+import bean.CustorBean;
+import bean.ProductBean;
+import db.DB;
+
+public class CustorDao &#123;
+public boolean reg(CustorBean cbean)&#123;
+    boolean b=false;
+    for(int i=0;i&lt;DB.clist.size();i++)&#123;
+        CustorBean c=DB.clist.get(i);
+        if(cbean.getName().equals(c.getName()))&#123;
+            System.out.println(&quot;用户名已存在&quot;);
+        &#125;
+        else&#123;
+            System.out.println(&quot;用户注册成功&quot;);
+        return    b=DB.clist.add(cbean);
+            
+        &#125;
         
+    &#125;
+    return b;
+&#125;
+
+public boolean log(CustorBean cbean)&#123;
+    boolean b=false;
+    for(int i=0;i&lt;DB.clist.size();i++)&#123;
+        CustorBean c=DB.clist.get(i);
+        if(cbean.getName().equals(c.getName())&amp;&amp;cbean.getPassword().equals(c.getPassword()))&#123;
+            System.out.println(&quot;用户登录成功&quot;);
+            b=true;
+        &#125;else&#123;
+            System.out.println(&quot;用户不存在&quot;);
+        &#125;
+    &#125;
+    return b;
+&#125;
+public boolean shopping(CustorBean cbean ,int pid,int num)&#123;
+    boolean b=false;
+    for(int i=0;i&lt;DB.list.size();i++)&#123;
+    ProductBean p=DB.list.get(i);
+    if(p.getpID()==pid)&#123;
+        p.setPnum(num);
+    b=cbean.getUlist().add(p);
+    &#125;        
+&#125;
+
+    return b;
+&#125;
+public void show(CustorBean cbean)&#123;
+    System.out.println(&quot;用户名:&quot;+cbean.getName());
+    System.out.println(&quot;购买清单&quot;);
+    for(int i=0;i&lt;DB.list.size();i++)&#123;
+        ProductBean p=DB.list.get(i);
+        System.out.println(&quot;商品名称&quot;+p.getPname()+&quot;购买单价&quot;+p.getPrice()+&quot;购买数量&quot;+p.getPnum());
+        &#125;        
+    &#125;
+&#125;
+</code></pre>
+<h3 id="UesrDao："><a href="#UesrDao：" class="headerlink" title="UesrDao："></a>UesrDao：</h3><pre><code>package dao;
+
+import db.DB;
+import bean.UserBean;
+
+public class UserDao &#123;
+
+public boolean reg(UserBean ubean)&#123;
+    boolean b=false;
+    //        DB.ulist---所有的用户数据
+    for(int i=0;i&lt;DB.ulist.size();i++) &#123;
+        UserBean ub=DB.ulist.get(i);//得到集合中的每一个元素
+        if(ub.getUid().equals(ubean.getUid())) &#123;
+            System.out.println(&quot;该用户已经存在&quot;);&#125;
+        else &#123;
+            DB.ulist.add(ubean);
+            b=true;
+            &#125;&#125;
+    return b;&#125;
+public boolean login(UserBean ubean) &#123;
+    boolean b=false;
+    for(int i=0;i&lt;DB.ulist.size();i++) &#123;
+        UserBean ub=DB.ulist.get(i);
+        if(ub.getUsername().equals(ubean.getUsername())&amp;&amp; ub.getPassword().equals(ubean.getPassword())) &#123;
+            b=true;&#125;&#125;
+    return b;
+  &#125;
+&#125;
+</code></pre>
+<h3 id="db包"><a href="#db包" class="headerlink" title="db包"></a>db包</h3><h3 id="DB："><a href="#DB：" class="headerlink" title="DB："></a>DB：</h3><pre><code>package db;
+
+import java.util.ArrayList;
+
+import bean.CustorBean;
+import bean.ProductBean;
+import bean.UserBean;
+
+public class DB &#123;
+/**
+ * @param args
+ */
+&#123;// 初始化商品
+    ProductBean pbean=new ProductBean(1001,&quot;banana&quot;,&quot;水果&quot;,25,55);
+    DB.list.add(pbean);
+    //初始化一个用户
+    UserBean uBean=new UserBean(&quot;001&quot;,&quot;zhangsan&quot;,&quot;123456&quot;);
+    ulist.add(uBean);
+    //初始化客户
+    CustorBean custor=new CustorBean();
+    custor.setName(&quot;test1&quot;);
+    custor.setPassword(&quot;123&quot;);
+    ArrayList&lt;ProductBean&gt; list1=new ArrayList&lt;ProductBean&gt;();
+    list1.add(pbean);
+    custor.setUlist(list1);
+    
+    clist.add(custor);
+&#125;
+public static ArrayList&lt;ProductBean&gt; list=new ArrayList&lt;ProductBean&gt;();
+
+public static ArrayList&lt;UserBean&gt; ulist=new ArrayList&lt;UserBean&gt;();
+
+public static ArrayList&lt;CustorBean&gt; clist=new ArrayList&lt;CustorBean&gt;();
+&#125;
+</code></pre>
+<h3 id="test包"><a href="#test包" class="headerlink" title="test包"></a>test包</h3><h3 id="TestProductDao："><a href="#TestProductDao：" class="headerlink" title="TestProductDao："></a>TestProductDao：</h3><pre><code>package test;
+
+import java.util.Scanner;
+
+import dao.ProductDao;
+import db.DB;
+
+import bean.ProductBean;
+
+public class TestProductDao &#123;
+public void test()&#123;
+    ProductDao pdao=new ProductDao();
+    ProductBean pbean=new ProductBean(1002,&quot;apple&quot;,&quot;水果&quot;,23.5,56);
+    DB.list.add(pbean);
+    
+    pdao.addProduct(pbean);
+    Scanner sc=new Scanner(System.in);
+    while(true)&#123;
+        System.out.println(&quot;1 添加 2 修改 3 删除 4 查找 5 退出&quot;);
+        System.out.println(&quot;请输入你的选项：&quot;);
+        int num=sc.nextInt();
+        switch(num)&#123;
+        case 1:
+            ProductBean p=new ProductBean();//创建对象
+            System.out.println(&quot;请输入 pID&quot;);
+            p.setpID(sc.nextInt());
+            System.out.println(&quot;请输入pname&quot;);
+            p.setPname(sc.next());
+            System.out.println(&quot;请输入 ptype&quot;);
+            p.setPtype(sc.next());
+            System.out.println(&quot;请输入price&quot;);
+            p.setPrice(sc.nextDouble());
+            System.out.println(&quot;请输入数量&quot;);
+            p.setPnum(sc.nextInt());
+            boolean b=pdao.addProduct(p);//调用添加方法进行添加
+            if(b)&#123;
+            System.out.println(&quot;添加成功&quot;);
+            &#125;
+            break;
+            case 2:
+            ProductBean p1=new ProductBean();//创建对象
+            //控制台输入的数据放入对象
+            System.out.println(&quot;请输入 pID&quot;);
+            p1.setpID(sc.nextInt());
+            System.out.println(&quot;请输入pname&quot;);
+            p1.setPname(sc.next());
+            System.out.println(&quot;请输入 ptype&quot;);
+            p1.setPtype(sc.next());
+            System.out.println(&quot;请输入price&quot;);
+            p1.setPrice(sc.nextDouble());
+            System.out.println(&quot;请输入数量&quot;);
+            p1.setPnum(sc.nextInt());
+            boolean b1= pdao.editProduct(p1);//调用操作方法进行修改
+            if(b1)&#123;
+            System.out.println(&quot;修改成功&quot;);
+            &#125;
+            break;
+            case 3:
+            System.out.println(&quot;请输入要删除的ID&quot;);
+            int ids=sc.nextInt();
+            pdao.delProduct(ids);//调用具体的方法去删除
+            break;
+            case 4:
+            pdao.selectProduct();
+            break;
+            case 5:
+            return ;
+            default:System.out.println(&quot;输入有误&quot;);
+            
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="TestCustor："><a href="#TestCustor：" class="headerlink" title="TestCustor："></a>TestCustor：</h3><pre><code>package test;
+
+import java.util.Scanner;
+
+import bean.CustorBean;
+import bean.ProductBean;
+import dao.CustorDao;
+import dao.ProductDao;
+import db.DB;
+
+public class TestCustor &#123;
+public  void custor() &#123;
+    
+    CustorDao cdao=new CustorDao();
+    CustorBean cbean=new CustorBean();
+    Scanner sc=new Scanner(System.in) ;
+    while(true)&#123;
+    System.out.println(&quot; 1 客户注册   2客户登录 3 退出&quot;);
+    int num=sc.nextInt();
+    switch(num)&#123;
+    case 1:
+        System.out.println(&quot;请输入用户名&quot;);
+        cbean.setName(sc.next());
+        System.out.println(&quot;请输入密码&quot;);
+        cbean.setPassword(sc.next());
+        cdao.reg(cbean);
+        break;
+    case 2:
+        System.out.println(&quot;请输入用户名&quot;);
+        cbean.setName(sc.next());
+        System.out.println(&quot;请输入密码&quot;);
+        cbean.setPassword(sc.next());
+        boolean b=cdao.log(cbean);
+        if(b)&#123;
+            boolean flog=true;
+            while(flog)&#123;
+            ProductDao pdao=new ProductDao();
+            System.out.println(&quot;商品列表&quot;);
+            pdao.selectProduct();
+            System.out.println(&quot;请输入要购买商品的 pid&quot;);
+            int pID=sc.nextInt();
+            System.out.println(&quot;请输入购买商品的数量&quot;);
+            int count=sc.nextInt();
+            cdao.shopping(cbean,count,pID);
+            System.out.println(&quot;是否继续购物 y  n&quot;);
+            if(&quot;n&quot;.equalsIgnoreCase(sc.next()))&#123;
+                
+                flog=false;
+            &#125;
+            &#125;
+            System.out.println(&quot;购物清单如下&quot;);
+            cdao.show(cbean);
+            
+        &#125;
+        break;
+    case 3:
+        return ;
+    &#125;
+    
+
+    &#125;
+  &#125;
+&#125;
+</code></pre>
+<h3 id="TestUserDao："><a href="#TestUserDao：" class="headerlink" title="TestUserDao："></a>TestUserDao：</h3><pre><code>package test;
+
+import java.util.Scanner;
+
+import dao.UserDao;
+import db.DB;
+
+import bean.UserBean;
+
+public class TestUserDao &#123;
+
+public  void admin() &#123;
+    
+    UserDao udao=new UserDao();
+    Scanner sc=new Scanner(System.in);
+    while(true) &#123;
+    System.out.println(&quot;1 注册 2 登陆 3 退出&quot;);
+    int num=sc.nextInt();
+    switch(num) &#123;
+    case 1:
+        UserBean ubean=new UserBean();
+        System.out.println(&quot;请输入uid&quot;);
+        ubean.setUid(sc.next());
+        System.out.println(&quot;请输入用户名&quot;);
+        ubean.setUsername(sc.next());
+        System.out.println(&quot;请输入密码&quot;);
+        ubean.setPassword(sc.next());
+    boolean b=udao.reg(ubean);
+    if(b) &#123;
+        System.out.println(&quot;注册成功&quot;);
+    &#125;else &#123;
+        System.out.println(&quot;注册失败&quot;);
+    &#125;
+        break;
+    case 2:
+        UserBean ubean1=new UserBean();
+        System.out.println(&quot;请输入用户名&quot;);
+        ubean1.setUsername(sc.next());
+        System.out.println(&quot;请输入密码&quot;);
+        ubean1.setPassword(sc.next());
+    boolean b1=udao.login(ubean1);
+    if(b1) &#123;
+        System.out.println(&quot;登陆成功&quot;);
+        TestProductDao test=new TestProductDao();
+        test.test();
+    &#125;else &#123;
+        System.out.println(&quot;登陆失败&quot;);
+    &#125;
+        break;
+    case 3:
+        return;
+        
+        default:System.out.println(&quot;选择有误&quot;);
+        &#125;
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<hr>
+<hr>
+<h2 id="开发日志："><a href="#开发日志：" class="headerlink" title="开发日志："></a><strong>开发日志：</strong></h2><p><strong>1.</strong> 分析项目、搭建项目分层.完成时间2021.06.28<br><strong>2.</strong> 实现商品的添加修改删除查找。完成时间2021.6.29<br><strong>3.</strong> 实现用户的登录注册。完成时间2021.7.1<br><strong>4.</strong> 实现客户的购物。完成时间2021.7.6<br><strong>5.</strong> 完成项目测试、打包项目代码。完成时间2021.7.12  </p>
+<h2 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a><strong>注意事项：</strong></h2><p><strong>1.</strong> 该程序使用JAVA代码编写，运行时请确保您的电脑已经配置好java环境，并下载安装好对应程序；<br><strong>2.</strong> 该项目可能不是很完善，如遇到bug请联系我修改；<br><strong>3.</strong> 下面是该项目代码的压缩包，我已打包好，有需要请自行下载。<br><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1noKZdKpro275y7eNbujNNw">简单的购物系统</a><br>提取码: uidu （若链接失效请联系我）</p>
+
       
 
       
@@ -286,8 +855,8 @@
 <nav id="article-nav">
   
   
-    <a href="/2021/06/30/%E5%A6%82%E4%BD%95%E9%80%89%E8%B4%AD%E7%94%B5%E8%84%91%EF%BC%88%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">如何选购电脑（数学建模）</div>
+    <a href="/2021/06/30/%E5%A6%82%E4%BD%95%E9%80%89%E8%B4%AD%E7%94%B5%E8%84%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">如何选购电脑</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -322,6 +891,28 @@
 
   
 
+
+
+  <section id="comments" style="margin:10px;padding:10px;background:#fff;">
+    <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "0BeJIzMoAvSbKIM0vbfhsVpK-gzGzoHsz",
+            app_key: "1KIqK7atO3k0XVSsCIzx82MI",
+            placeholder: "Just go go",
+            avatar:"mm"
+        });
+    }
+</script>
+  </section>
 
           </div>
         </div>
